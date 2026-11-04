@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light" style="color-scheme: light;"><head>
+<meta charset="utf-8">
+<title>FREE FIRE Player Thailand – ระบบฐานันดรผู้เล่น Free Fire ไทย</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;800&amp;display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--text:#1b1b1f;--muted:#666a73;--line:#e3e0d8;--accent:#e8590c;--accent2:#f59f00;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121317;--card:#1c1e24;--text:#f1f1f3;--muted:#a0a4ae;--line:#2c2f38;--accent:#ff8a3d;--accent2:#ffc53d}}
+:root[data-theme="dark"]{--bg:#121317;--card:#1c1e24;--text:#f1f1f3;--muted:#a0a4ae;--line:#2c2f38;--accent:#ff8a3d;--accent2:#ffc53d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:20px 16px 60px}
+header{padding:36px 0 20px;text-align:center}
+.logo{display:inline-block;font-weight:800;font-size:.8rem;letter-spacing:.2em;color:var(--accent);border:1.5px solid var(--accent);border-radius:99px;padding:2px 14px}
+h1{font-size:clamp(2rem,7vw,3.2rem);margin:12px 0 4px;line-height:1.15}
+h1 span{color:var(--accent)}
+.sub{color:var(--muted);margin:0}
+section{margin-top:28px}
+h2{font-size:1.25rem;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.calc{display:flex;gap:10px;flex-wrap:wrap}
+input{flex:1;min-width:140px;font:inherit;font-size:1.2rem;padding:10px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--text)}
+input:focus{outline:2px solid var(--accent);border-color:transparent}
+.result{margin-top:16px;text-align:center}
+.badge{display:inline-block;font-weight:800;font-size:2.4rem;padding:4px 22px;border-radius:14px;color:#fff;background:var(--accent)}
+.badge.none{background:var(--muted)}
+.rname{font-weight:600;margin-top:8px}
+.rmeta{color:var(--muted);font-size:.92rem;margin-top:2px}
+.bar{height:10px;background:var(--line);border-radius:99px;margin-top:14px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .4s}
+.ladder{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card)}
+.row.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.row.gap{background:transparent;border-style:dashed;color:var(--muted);padding:6px 14px;font-size:.88rem}
+.tag{font-weight:800;font-size:1.05rem;color:var(--accent)}
+.row.gap .tag{color:var(--muted)}
+.en{font-weight:600}.th{color:var(--muted);font-size:.9rem}
+.rng{font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-size:.85rem;color:var(--muted)}
+td b{color:var(--accent)}
+.pill{font-size:.8rem;padding:2px 10px;border-radius:99px;border:1px solid var(--line);white-space:nowrap}
+.pill.t{border-color:var(--accent);color:var(--accent)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tab{font:inherit;font-weight:600;padding:8px 16px;border-radius:99px;border:1.5px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+select{font:inherit;padding:8px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--text)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tools input{font-size:1rem;padding:8px 12px}
+.lb tbody tr{cursor:pointer}.lb tbody tr:hover{background:var(--bg)}
+.rk{font-weight:800;width:44px}.rk.top{color:var(--accent2)}
+.back{font:inherit;background:none;border:none;color:var(--accent);cursor:pointer;padding:0;margin-bottom:12px;font-weight:600}
+.pf{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.pf div{border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.pf small{display:block;color:var(--muted);font-size:.8rem}
+.pf b{font-size:1.1rem}
+.phead{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.phead h2{margin:0;font-size:1.6rem}
+.small{font-size:.85rem;color:var(--muted);margin-top:8px}
+.fh{display:flex;gap:18px;align-items:center;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.av{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-weight:800;font-size:2rem;display:flex;align-items:center;justify-content:center;flex:none}
+.fh h2{margin:0;font-size:1.7rem;line-height:1.2}
+.fh .fed{color:var(--muted);margin-top:2px}
+.fcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:18px 0}
+.fc{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}
+.fc small{display:block;color:var(--muted);font-size:.78rem}
+.fc b{font-size:1.6rem;font-variant-numeric:tabular-nums}
+.fc.main b{color:var(--accent)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:640px){.fgrid{grid-template-columns:1fr}}
+.fgrid h3{font-size:1rem;margin:0 0 8px;color:var(--muted)}
+.kv{width:100%;min-width:0}
+.kv td{padding:8px 4px}.kv td:first-child{color:var(--muted);width:46%}
+.up{color:#2f9e44}.dn{color:#e03131}
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.cbtn{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--text);text-decoration:none}
+.cbtn:hover{border-color:var(--accent)}.cbtn b{display:block}.cbtn small{color:var(--muted);word-break:break-all}.ci{font-size:1.8rem}
+.tcard{margin-bottom:10px}.thead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.tn{font-size:1.1rem}.tnote{margin-top:8px;color:var(--muted)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--text);color:var(--bg);padding:8px 18px;border-radius:99px;font-size:.9rem;z-index:20;max-width:92vw;text-align:center}
+#toast.err{background:#e03131;color:#fff}
+footer a{color:var(--accent)}
+footer{margin-top:40px;text-align:center;color:var(--muted);font-size:.85rem}
+@media(max-width:480px){.row{grid-template-columns:48px 1fr;}.rng{grid-column:2;text-align:left}}
+textarea{width:100%;font:inherit;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--text);margin-top:8px}
+.fl{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.fl input,.fl select{min-width:0;font-size:1rem}
+img.av{object-fit:cover;background:var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="logo">FFPTH</span>
+  <h1>FREE FIRE <span>Player Thailand</span></h1>
+  <p class="sub">ระบบฐานันดรและเรตติ้งผู้เล่น Free Fire ประเทศไทย</p>
+<nav class="tabs" style="justify-content:center;margin-top:16px"><button class="tab on" id="navBoard" type="button">อันดับผู้เล่น</button><button class="tab" id="navTour" type="button">ทัวร์นาเมนต์</button><button class="tab" id="navTiter" type="button">ข้อมูล Titer</button><button class="tab" id="navContact" type="button">ติดต่อ</button><button class="tab" id="navUsers" type="button" hidden="">บัญชีผู้ใช้</button><button class="tab" id="navMe" type="button" hidden="">ตัวฉัน</button><button class="tab" id="navAdmin" type="button">ล็อกอิน</button></nav>
+</header>
+
+<section id="board">
+  <div id="admin" class="card" style="margin-bottom:14px" hidden="">
+    <div class="tools" style="margin:0"><b>โหมดแอดมิน</b><button class="tab" id="addBtn" type="button">+ เพิ่มผู้เล่น</button><span class="small" id="pmsg" style="margin:0"></span></div>
+    <div class="tools" style="margin:8px 0 0"><span class="small" id="asv" style="margin:0">บันทึกอัตโนมัติ: กำลังตรวจสอบ…</span><button class="tab" id="retryBtn" type="button" hidden="">ลองบันทึกอีกครั้ง</button></div>
+    <div id="pform" style="margin-top:12px" hidden="">
+      <div class="tools"><input id="pn" placeholder="ชื่อผู้เล่น" maxlength="40"><select id="pc"><option value="TH">🇹🇭 ไทย</option><option value="VN">🇻🇳 เวียดนาม</option><option value="JP">🇯🇵 ญี่ปุ่น</option><option value="ID">🇮🇩 อินโดนีเซีย</option><option value="BR">🇧🇷 บราซิล</option><option value="MY">🇲🇾 มาเลเซีย</option><option value="SG">🇸🇬 สิงคโปร์</option><option value="PH">🇵🇭 ฟิลิปปินส์</option><option value="KR">🇰🇷 เกาหลีใต้</option><option value="CN">🇨🇳 จีน</option><option value="IN">🇮🇳 อินเดีย</option><option value="US">🇺🇸 สหรัฐฯ</option><option value="MM">🇲🇲 เมียนมา</option><option value="LA">🇱🇦 ลาว</option><option value="KH">🇰🇭 กัมพูชา</option></select></div>
+      <div class="tools"><input id="pb" type="number" inputmode="numeric" placeholder="ปีเกิด (ค.ศ.)"><input id="phs" type="number" inputmode="numeric" placeholder="Elo HS (ยิงหัว)"><input id="pep" type="number" inputmode="numeric" placeholder="Elo EP (ลีค)"><input id="pss" type="number" inputmode="numeric" placeholder="Elo SS (แรงค์ในเกม)"></div>
+      <div class="tools" style="margin:0"><button class="tab on" id="saveBtn" type="button">บันทึก</button><button class="tab" id="cancelBtn" type="button">ยกเลิก</button></div>
+    </div>
+  </div>
+  <div id="listView" hidden="">
+    <h2>ตารางอันดับผู้เล่น</h2>
+    <div class="tabs" id="catTabs"><button class="tab on" data-c="hs" type="button">HS · ยิงหัว</button><button class="tab" data-c="ep" type="button">EP · ลีค</button><button class="tab" data-c="ss" type="button">SS · แรงค์ในเกม</button></div>
+    <div class="tabs">
+      <button class="tab on" id="tabAll" type="button">อันดับทั่วโลก</button>
+      <button class="tab" id="tabCountry" type="button">อันดับในประเทศ</button>
+    </div>
+    <div class="tools">
+      <select id="cSel" hidden=""><option value="TH">🇹🇭 ไทย</option><option value="VN">🇻🇳 เวียดนาม</option><option value="JP">🇯🇵 ญี่ปุ่น</option><option value="ID">🇮🇩 อินโดนีเซีย</option><option value="BR">🇧🇷 บราซิล</option><option value="MY">🇲🇾 มาเลเซีย</option><option value="SG">🇸🇬 สิงคโปร์</option><option value="PH">🇵🇭 ฟิลิปปินส์</option><option value="KR">🇰🇷 เกาหลีใต้</option><option value="CN">🇨🇳 จีน</option><option value="IN">🇮🇳 อินเดีย</option><option value="US">🇺🇸 สหรัฐฯ</option><option value="MM">🇲🇲 เมียนมา</option><option value="LA">🇱🇦 ลาว</option><option value="KH">🇰🇭 กัมพูชา</option></select>
+      <input id="q" type="search" placeholder="ค้นหาชื่อผู้เล่น">
+    </div>
+    <div class="card scroll">
+      <table class="lb">
+        <thead><tr><th>#</th><th>ชื่อ</th><th>ประเทศ</th><th>Elo</th><th>Titer</th><th>อายุ</th></tr></thead>
+        <tbody id="lbBody"><tr data-id="1"><td class="rk top">1</td><td><b style="color:var(--text)">Maru Nakamura</b></td><td>🇯🇵 ญี่ปุ่น</td><td>2,789</td><td><b>GM</b></td><td>20</td></tr><tr data-id="2"><td class="rk top">2</td><td><b style="color:var(--text)">Marugg</b></td><td>🇹🇭 ไทย</td><td>2,000</td><td><b>LM</b></td><td>16</td></tr></tbody>
+      </table>
+    </div>
+    <div class="small">* คลิกที่แถวเพื่อดูโปรไฟล์</div>
+  </div>
+  <div id="profView">
+    <button class="back" id="backBtn" type="button">← กลับไปตารางอันดับ</button>
+    <div class="card" id="prof"><div class="fh"><div class="av">M</div><div><h2>Maru Nakamura</h2><div class="fed">🇯🇵 ญี่ปุ่น · Grandmaster</div></div><span class="badge" style="margin-left:auto;font-size:1.6rem">GM</span></div><div class="fcards"><div class="fc main"><small>HS · ยิงหัว</small><b>2,789</b><small>โลก #1 · ประเทศ #1</small></div><div class="fc"><small>EP · ลีค</small><b>—</b><small>ยังไม่มีเรตติ้ง</small></div><div class="fc"><small>SS · แรงค์ในเกม</small><b>—</b><small>ยังไม่มีเรตติ้ง</small></div></div><div class="fgrid"><div><h3>ข้อมูลผู้เล่น</h3><table class="kv"><tbody><tr><td>FFPTH ID</td><td><b>101371</b></td></tr><tr><td>ชื่อ</td><td>Maru Nakamura</td></tr><tr><td>สังกัด (Federation)</td><td>🇯🇵 ญี่ปุ่น</td></tr><tr><td>ปีเกิด</td><td>2006</td></tr><tr><td>อายุ</td><td>20 ปี</td></tr><tr><td>Title สูงสุด</td><td>Grandmaster (GM)</td></tr><tr><td>ความคืบหน้า</td><td>อยู่ระดับสูงสุดแล้ว</td></tr></tbody></table></div><div><h3>พัฒนาการ Elo</h3><div class="tabs"><button class="tab on" data-pc="hs" type="button">HS</button><button class="tab" data-pc="ep" type="button">EP</button><button class="tab" data-pc="ss" type="button">SS</button></div><svg viewBox="0 0 600 200" width="100%" role="img" aria-label="กราฟ Elo"><polyline points="30,110 570,80" fill="none" stroke-width="2.5" style="stroke:var(--accent)"></polyline><circle cx="30" cy="110" r="3.5" style="fill:var(--accent)"></circle><circle cx="570" cy="80" r="3.5" style="fill:var(--accent)"></circle><text x="30" y="192" font-size="11" style="fill:var(--muted)">2026-11-04</text><text x="570" y="192" text-anchor="end" font-size="11" style="fill:var(--muted)">2026-11-05</text></svg></div></div><h3 style="margin:18px 0 8px;color:var(--muted);font-size:1rem">ประวัติการแข่ง</h3><div class="scroll"><table style="min-width:560px"><thead><tr><th>วันที่</th><th>รายการ</th><th>ประเภท</th><th>ผล</th><th>Elo เปลี่ยน</th><th>Elo หลังแข่ง</th><th></th></tr></thead><tbody><tr><td>2026-11-05</td><td>FFPTH</td><td><span class="pill">HS</span></td><td>2</td><td class="up">+10</td><td>2,799</td><td><button class="back" style="margin:0" data-hi="1" type="button">ลบ</button></td></tr><tr><td>2026-11-04</td><td>FFPTTH</td><td><span class="pill">HS</span></td><td>9</td><td class="up">+12</td><td>2,789</td><td><button class="back" style="margin:0" data-hi="0" type="button">ลบ</button></td></tr></tbody></table></div></div>
+    <div id="profAdmin" class="tools" style="margin-top:12px" hidden=""><button class="tab" id="editBtn" type="button">แก้ไขผู้เล่น</button><button class="tab" id="delBtn" type="button">ลบผู้เล่น</button><button class="tab" id="hAddBtn" type="button">+ เพิ่มประวัติการแข่ง</button><button class="tab" id="banBtn" type="button">แบนผู้เล่น</button><button class="tab" id="unbanBtn" type="button" hidden="">ปลดแบน</button></div>
+    <div id="bform" class="card" style="margin-top:12px" hidden=""><div class="tools"><input id="bw" placeholder="เหตุผลการแบน เช่น ใช้โปรแกรมช่วยเล่น" maxlength="80"><select id="bd"><option value="0">ถาวร</option><option value="7">7 วัน</option><option value="30">30 วัน</option><option value="90">90 วัน</option><option value="180">180 วัน</option><option value="365">365 วัน</option></select></div><div class="tools" style="margin:0"><button class="tab on" id="bsave" type="button">ยืนยันแบน</button><button class="tab" id="bcancel" type="button">ยกเลิก</button></div></div>
+    <div id="hform" class="card" style="margin-top:12px" hidden=""><div class="tools"><input id="hd" type="date"><input id="hv" list="evlist" placeholder="ชื่อรายการแข่ง (เลือกจากทัวร์นาเมนต์ได้)" maxlength="60" autocomplete="off"><datalist id="evlist"></datalist><select id="hc"></select></div><div class="tools"><input id="ho" list="oplist" placeholder="ชื่อคู่แข่ง" maxlength="40" autocomplete="off"><datalist id="oplist"></datalist><input id="hoe" type="number" inputmode="numeric" placeholder="Elo คู่แข่ง"><select id="hrs"><option value="W">ชนะ</option><option value="D">เสมอ</option><option value="L">แพ้</option><option value="">ไม่คิด Elo (กรอกเอง)</option></select></div><div class="tools"><input id="hr" placeholder="หมายเหตุ เช่น อันดับ 1" maxlength="40"><input id="hch" type="number" inputmode="numeric" placeholder="Elo เปลี่ยน (ว่าง = คำนวณให้)"><input id="he" type="number" inputmode="numeric" placeholder="Elo หลังแข่ง (ใช้เมื่อไม่คิด Elo)"></div><label class="small" id="hoppw" hidden=""><input id="hopp" type="checkbox" checked="" style="flex:none;min-width:0;width:auto;margin-right:6px"> อัปเดต Elo และประวัติของคู่แข่งด้วย</label><div class="small" id="hprev"></div><div class="tools" style="margin:8px 0 0"><button class="tab on" id="hsave" type="button">บันทึกประวัติ</button><button class="tab" id="hcancel" type="button">ยกเลิก</button></div></div>
+  </div>
+</section>
+
+<section id="loginView" hidden=""><h2>ล็อกอิน</h2><div class="card"><div class="tools"><input id="lu" placeholder="ชื่อผู้ใช้" autocomplete="username"><input id="lp" type="password" placeholder="รหัสผ่าน" autocomplete="current-password"></div><div class="tools" style="margin:0"><button class="tab on" id="lgo" type="button">เข้าสู่ระบบ</button><span class="small" id="lmsg" style="margin:0"></span></div><div class="small">บัญชีผู้ใช้สร้างโดยแอดมินเท่านั้น หากต้องการบัญชีให้ติดต่อแอดมิน</div></div></section>
+
+<section id="usersView" hidden=""><h2>บัญชีผู้ใช้</h2>
+  <div class="card" style="margin-bottom:14px">
+    <div class="fl"><input id="uu" placeholder="ชื่อผู้ใช้ (อังกฤษ/ตัวเลข)" maxlength="20" autocomplete="off"><input id="up" placeholder="รหัสผ่าน" maxlength="40" autocomplete="off"><input id="ur" placeholder="ชื่อจริง" maxlength="60"><input id="un" placeholder="ชื่อที่ขึ้นบน TOP" maxlength="40"><input id="ui" inputmode="numeric" placeholder="รหัส ID เกม (FF UID)" maxlength="14"><select id="uc"></select></div>
+    <div class="tools" style="margin:10px 0 0"><button class="tab on" id="uadd" type="button">+ เพิ่มบัญชี</button><span class="small" id="umsg" style="margin:0"></span></div>
+  </div>
+  <div class="card scroll"><table><thead><tr><th>ชื่อผู้ใช้</th><th>ชื่อจริง</th><th>ชื่อที่ขึ้นบน TOP</th><th>ประเทศ</th><th>ID เกม</th><th></th></tr></thead><tbody id="uBody"></tbody></table></div>
+  <div class="small">* รหัสผ่านถูกเก็บแบบแฮช แอดมินดูย้อนหลังไม่ได้ — ถ้าผู้ใช้ลืมให้ลบแล้วสร้างบัญชีใหม่</div>
+</section>
+
+<section id="meView" hidden=""><h2>ตัวฉัน</h2><div class="card" id="meCard"></div></section>
+
+<section id="tourView" hidden="">
+  <h2>ทัวร์นาเมนต์</h2>
+  <div id="trAdmin" class="card" style="margin-bottom:14px" hidden="">
+    <div class="tools" style="margin:0"><b>จัดการทัวร์นาเมนต์</b><button class="tab" id="trAdd" type="button">+ เพิ่มทัวร์นาเมนต์</button><span class="small" id="trmsg" style="margin:0"></span></div>
+    <div id="trform" style="margin-top:12px" hidden="">
+      <div class="tools"><input id="trn" placeholder="ชื่อรายการ" maxlength="60"><input id="trd" type="date"></div>
+      <div class="tools"><select id="trc"></select><select id="trs"><option value="up">เร็วๆ นี้</option><option value="live">กำลังแข่ง</option><option value="done">จบแล้ว</option></select></div>
+      <div class="tools"><input id="trnote" placeholder="รายละเอียด / หมายเหตุ (ไม่บังคับ)" maxlength="120"></div>
+      <div class="tools"><input id="trcap" type="number" inputmode="numeric" min="1" placeholder="รับสูงสุดกี่คน (ว่าง = ไม่จำกัด)"><label class="small" style="margin:0;display:flex;gap:8px;align-items:center"><input id="trreg" type="checkbox" style="flex:none;min-width:0;width:18px;height:18px"> เปิดรับลงชื่อ</label></div>
+      <div class="tools" style="margin:0"><button class="tab on" id="trSave" type="button">บันทึก</button><button class="tab" id="trCancel" type="button">ยกเลิก</button></div>
+    </div>
+  </div>
+  <div id="trList"></div>
+  <div class="small">* ชื่อรายการที่เพิ่มที่นี่จะขึ้นให้เลือกตอนแอดมินเพิ่มประวัติการแข่งของผู้เล่น</div>
+</section>
+
+<section id="regView" hidden="">
+  <button class="back" id="rBack" type="button">← กลับไปทัวร์นาเมนต์</button>
+  <div class="card" id="rHead"></div>
+  <h2 style="margin-top:22px">รายชื่อผู้เข้าร่วม</h2>
+  <div class="card scroll"><table><thead><tr><th>#</th><th>ชื่อในเกม</th><th>ประเทศ</th><th>FF UID</th><th>Elo</th><th>Titer</th><th></th></tr></thead><tbody id="rBody"></tbody></table></div>
+  <div class="small">* Elo / Titer ดึงจากตารางอันดับโดยจับคู่ตามชื่อผู้เล่น</div>
+  <div class="card" id="rSelf" style="margin-top:14px" hidden=""></div>
+  <div class="card" id="rForm" style="margin-top:14px" hidden="">
+    <h2 style="margin-bottom:10px">แอดมิน: เพิ่มชื่อผู้เข้าร่วม</h2>
+    <div class="fl"><input id="rn" placeholder="ชื่อในเกม" maxlength="40"><input id="ru" inputmode="numeric" placeholder="FF UID (ไม่บังคับ)" maxlength="14"><select id="rc"></select></div>
+    <div class="tools" style="margin:10px 0 0"><button class="tab on" id="rCopy" type="button" hidden="">คัดลอกข้อความลงชื่อ</button><a class="tab" id="rDc" hidden="" href="https://discord.gg/n9R9TVH4cC" target="_blank" rel="noopener noreferrer" style="text-decoration:none">ส่งให้แอดมินทาง Discord</a><button class="tab" id="rAdd" type="button" hidden="">+ เพิ่มเข้ารายชื่อ (แอดมิน)</button></div>
+    <textarea id="rMsg" rows="5" readonly="" hidden=""></textarea>
+    <div id="rPw" hidden=""><textarea id="rPaste" rows="3" placeholder="แอดมิน: วางข้อความลงชื่อที่ผู้เล่นส่งมา ระบบจะเติมฟอร์มให้อัตโนมัติ"></textarea></div>
+    <div class="small" id="rmsg"></div>
+  </div>
+</section>
+
+<section id="contactView" hidden="">
+  <h2>ติดต่อ</h2>
+  <div class="card">
+    <p style="margin:0 0 14px">มีข้อสงสัย แจ้งปัญหา หรืออยากเข้าร่วมระบบ ติดต่อได้ตามช่องทางด้านล่าง</p>
+    <div class="contact">
+      <a class="cbtn" href="https://discord.gg/n9R9TVH4cC" target="_blank" rel="noopener noreferrer"><span class="ci">💬</span><span><b>Discord</b><small>discord.gg/n9R9TVH4cC</small></span></a>
+      <a class="cbtn" href="https://www.tiktok.com/search/user?q=Maru%20NeverdirPS" target="_blank" rel="noopener noreferrer"><span class="ci">🎵</span><span><b>TikTok</b><small>Maru NeverdirPS</small></span></a>
+    </div>
+  </div>
+</section>
+
+<div id="titerView" hidden="">
+<section>
+  <h2>เช็ก Title จากคะแนน ELO</h2>
+  <div class="card">
+    <div class="calc">
+      <input id="elo" type="number" inputmode="numeric" min="0" max="4000" placeholder="กรอกคะแนน ELO เช่น 2350">
+    </div>
+    <div class="result" id="res">
+      <div class="rmeta">กรอกคะแนนเพื่อดูว่าอยู่ Title ไหน</div>
+    </div>
+    <div class="bar"><i id="bar"></i></div>
+  </div>
+</section>
+
+<section>
+  <h2>ตารางช่วงคะแนน</h2>
+  <div class="ladder" id="ladder"><div id="r9" class="row"><span class="tag">GM</span><span><span class="en">Grandmaster</span><br><span class="th">ปรมาจารย์ใหญ่</span></span><span class="rng">2,500+</span></div><div id="r8" class="row"><span class="tag">IM</span><span><span class="en">International Master</span><br><span class="th">ปรมาจารย์นานาชาติ</span></span><span class="rng">2,400 – 2,499</span></div><div id="r7" class="row"><span class="tag">FFM</span><span><span class="en">Free Fire Master</span><br><span class="th">มาสเตอร์แห่ง Free Fire</span></span><span class="rng">2,300 – 2,399</span></div><div id="r6" class="row"><span class="tag">CM</span><span><span class="en">Candidate Master</span><br><span class="th">ผู้สมัครระดับมาสเตอร์</span></span><span class="rng">2,200 – 2,299</span></div><div id="r5" class="row"><span class="tag">NM</span><span><span class="en">National Master</span><br><span class="th">มาสเตอร์ระดับประเทศ</span></span><span class="rng">2,100 – 2,199</span></div><div id="r4" class="row"><span class="tag">LM</span><span><span class="en">Local Master</span><br><span class="th">มาสเตอร์ระดับท้องถิ่น</span></span><span class="rng">2,000 – 2,099</span></div><div id="r3" class="row"><span class="tag">TA</span><span><span class="en">Tier A</span><br><span class="th">ระดับ A</span></span><span class="rng">1,800 – 1,999</span></div><div id="r2" class="row"><span class="tag">TB</span><span><span class="en">Tier B</span><br><span class="th">ระดับ B</span></span><span class="rng">1,600 – 1,799</span></div><div id="r1" class="row"><span class="tag">TC</span><span><span class="en">Tier C</span><br><span class="th">ระดับ C</span></span><span class="rng">1,400 – 1,599</span></div><div id="r0" class="row"><span class="tag">TD</span><span><span class="en">Tier D</span><br><span class="th">ระดับ D</span></span><span class="rng">0 – 1,399</span></div></div>
+</section>
+
+<section>
+  <h2>ความหมายของ Title</h2>
+  <div class="card scroll">
+    <table>
+      <thead><tr><th>Title</th><th>ชื่อเต็ม</th><th>ความหมาย</th></tr></thead>
+      <tbody id="meaning"><tr><td><b>GM</b></td><td>Grandmaster</td><td>ปรมาจารย์ใหญ่</td></tr><tr><td><b>IM</b></td><td>International Master</td><td>ปรมาจารย์นานาชาติ</td></tr><tr><td><b>FFM</b></td><td>Free Fire Master</td><td>มาสเตอร์แห่ง Free Fire</td></tr><tr><td><b>CM</b></td><td>Candidate Master</td><td>ผู้สมัครระดับมาสเตอร์</td></tr><tr><td><b>NM</b></td><td>National Master</td><td>มาสเตอร์ระดับประเทศ</td></tr><tr><td><b>LM</b></td><td>Local Master</td><td>มาสเตอร์ระดับท้องถิ่น</td></tr><tr><td><b>TA</b></td><td>Tier A</td><td>ระดับ A</td></tr><tr><td><b>TB</b></td><td>Tier B</td><td>ระดับ B</td></tr><tr><td><b>TC</b></td><td>Tier C</td><td>ระดับ C</td></tr><tr><td><b>TD</b></td><td>Tier D</td><td>ระดับ D</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>เงื่อนไขการได้รับ Title</h2>
+  <div class="card scroll">
+    <table>
+      <thead><tr><th>Title</th><th>ELO ขั้นต่ำ</th><th>เงื่อนไขเพิ่มเติม</th></tr></thead>
+      <tbody id="cond"><tr><td><b>GM</b></td><td>2,500</td><td><span class="pill t">3 Norm</span></td></tr><tr><td><b>IM</b></td><td>2,400</td><td><span class="pill t">1 Norm</span></td></tr><tr><td><b>FFM</b></td><td>2,300</td><td><span class="pill t">ผ่านการทดสอบระดับ</span></td></tr><tr><td><b>CM</b></td><td>2,200</td><td><span class="pill t">ผ่านการทดสอบระดับ</span></td></tr><tr><td><b>NM</b></td><td>2,100</td><td><span class="pill t">ไม่ต้องทดสอบ</span></td></tr><tr><td><b>LM</b></td><td>2,000</td><td><span class="pill t">ไม่ต้องทดสอบ</span></td></tr><tr><td><b>TA</b></td><td>1,800</td><td><span class="pill">Rating</span></td></tr><tr><td><b>TB</b></td><td>1,600</td><td><span class="pill">Rating</span></td></tr><tr><td><b>TC</b></td><td>1,400</td><td><span class="pill">Rating</span></td></tr><tr><td><b>TD</b></td><td>0</td><td><span class="pill">Rating</span></td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+</div>
+<footer>© FREE FIRE Player Thailand · ข้อมูลเป็นเกณฑ์อ้างอิงของระบบ · <a href="#contact">ติดต่อ</a></footer>
+<div id="toast" hidden=""></div>
+</div>
+
+<script type="application/json" id="rdata">[]</script>
+<script type="application/json" id="udata">[{"id":"1","u":"Marugg","s":"xyegpxct92smw2ejmcq","h":"44c242079bc3600219b049e9d2f33c964131f75c7a3bedc3fc205a35929ea2e3","rn":"Maru Nakamura","n":"Maru Nakamura","uid":"54615115","c":"TH"}]</script>
+<script type="application/json" id="tdata">[{"id":"1","n":"Maru","d":"2026-11-05","cat":"hs","s":"up","note":"","cap":10,"reg":"1"}]</script>
+<script type="application/json" id="pdata">[{"id":"1","n":"Maru Nakamura","c":"JP","b":2006,"r":{"hs":2789},"h":[{"d":"2026-11-04","ev":"FFPTTH","cat":"hs","res":"9","ch":12,"e":2789},{"d":"2026-11-05","ev":"FFPTH","cat":"hs","res":"2","ch":10,"e":2799}],"ban":null,"bl":[]},{"id":"2","n":"Marugg","c":"TH","b":2010,"r":{"hs":2000},"h":[],"ban":null,"bl":[]}]</script>
+<script>
+var SRC="<!DOCTYPE html>\n"+document.documentElement.outerHTML;
+var T=[
+ {k:"TD",en:"Tier D",th:"ระดับ D",min:0,max:1399,req:"0",c:"Rating"},
+ {k:"TC",en:"Tier C",th:"ระดับ C",min:1400,max:1599,req:"1,400",c:"Rating"},
+ {k:"TB",en:"Tier B",th:"ระดับ B",min:1600,max:1799,req:"1,600",c:"Rating"},
+ {k:"TA",en:"Tier A",th:"ระดับ A",min:1800,max:1999,req:"1,800",c:"Rating"},
+ {k:"LM",en:"Local Master",th:"มาสเตอร์ระดับท้องถิ่น",min:2000,max:2099,req:"2,000",c:"ไม่ต้องทดสอบ"},
+ {k:"NM",en:"National Master",th:"มาสเตอร์ระดับประเทศ",min:2100,max:2199,req:"2,100",c:"ไม่ต้องทดสอบ"},
+ {k:"CM",en:"Candidate Master",th:"ผู้สมัครระดับมาสเตอร์",min:2200,max:2299,req:"2,200",c:"ผ่านการทดสอบระดับ"},
+ {k:"FFM",en:"Free Fire Master",th:"มาสเตอร์แห่ง Free Fire",min:2300,max:2399,req:"2,300",c:"ผ่านการทดสอบระดับ"},
+ {k:"IM",en:"International Master",th:"ปรมาจารย์นานาชาติ",min:2400,max:2499,req:"2,400",c:"1 Norm"},
+ {k:"GM",en:"Grandmaster",th:"ปรมาจารย์ใหญ่",min:2500,max:null,req:"2,500",c:"3 Norm"}
+];
+var fmt=function(n){return n.toLocaleString("en-US")};
+var ladder=document.getElementById("ladder");ladder.innerHTML="";
+T.slice().reverse().forEach(function(t,i){
+  var d=document.createElement("div");
+  var idx=T.length-1-i;
+  d.id="r"+idx;
+  var rng=t.max===null?fmt(t.min)+"+":fmt(t.min)+" – "+fmt(t.max);
+  if(t.k){
+    d.className="row";
+    d.innerHTML='<span class="tag">'+t.k+'</span><span><span class="en">'+t.en+'</span><br><span class="th">'+t.th+'</span></span><span class="rng">'+rng+'</span>';
+  }else{
+    d.className="row gap";
+    d.innerHTML='<span class="tag">—</span><span>Unranked</span><span class="rng">'+rng+'</span>';
+  }
+  ladder.appendChild(d);
+});
+var m=document.getElementById("meaning"),c=document.getElementById("cond");m.innerHTML="";c.innerHTML="";
+T.slice().reverse().forEach(function(t){
+  if(!t.k)return;
+  m.insertAdjacentHTML("beforeend","<tr><td><b>"+t.k+"</b></td><td>"+t.en+"</td><td>"+t.th+"</td></tr>");
+  var cls=t.c==="Rating"?"pill":"pill t";
+  c.insertAdjacentHTML("beforeend","<tr><td><b>"+t.k+"</b></td><td>"+t.req+"</td><td><span class='"+cls+"'>"+t.c+"</span></td></tr>");
+});
+var CATS=[{k:"hs",n:"HS",th:"ยิงหัว"},{k:"ep",n:"EP",th:"ลีค"},{k:"ss",n:"SS",th:"แรงค์ในเกม"}];
+var CN={TH:"🇹🇭 ไทย",VN:"🇻🇳 เวียดนาม",JP:"🇯🇵 ญี่ปุ่น",ID:"🇮🇩 อินโดนีเซีย",BR:"🇧🇷 บราซิล",MY:"🇲🇾 มาเลเซีย",SG:"🇸🇬 สิงคโปร์",PH:"🇵🇭 ฟิลิปปินส์",KR:"🇰🇷 เกาหลีใต้",CN:"🇨🇳 จีน",IN:"🇮🇳 อินเดีย",US:"🇺🇸 สหรัฐฯ",MM:"🇲🇲 เมียนมา",LA:"🇱🇦 ลาว",KH:"🇰🇭 กัมพูชา"};
+var ADM={u:"maru",p:"123"};
+var $=function(id){return document.getElementById(id)};
+var P=JSON.parse($("pdata").textContent),isAdmin=false,curP=null,editId=null,armed=false,cat="hs",pcat=null,mode="all";
+try{isAdmin=sessionStorage.getItem("ffadm")==="1"}catch(e){}
+var TR=JSON.parse($("tdata").textContent),RG=JSON.parse($("rdata").textContent),curT=null,rArm=null,US=JSON.parse($("udata").textContent),me=null,DB=null,AV={};
+try{var sid=sessionStorage.getItem("ffuid");me=US.filter(function(a){return a.id===sid})[0]||null}catch(e){}
+P.forEach(function(p){p.a=new Date().getFullYear()-p.b;p.r=p.r||{};p.h=p.h||[];p.bl=p.bl||[]});
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function num(s){s=String(s).trim();var v=parseInt(s,10);return s===""||isNaN(v)?null:v}
+function rank(){
+  P.forEach(function(p){p.wr={};p.cr={}});
+  CATS.forEach(function(c){var cc={};P.filter(function(p){return p.r[c.k]!=null&&!isBanned(p)}).sort(function(a,b){return b.r[c.k]-a.r[c.k]}).forEach(function(p,i){p.wr[c.k]=i+1;cc[p.c]=(cc[p.c]||0)+1;p.cr[c.k]=cc[p.c]})});
+}
+rank();
+function best(p){var o=null;CATS.forEach(function(c){var e=p.r[c.k];if(e!=null&&(!o||e>o.e))o={c:c.k,e:e}});return o}
+function rsl(r){return r==="W"?'<b class="up">ชนะ</b>':r==="L"?'<b class="dn">แพ้</b>':r==="D"?'<b>เสมอ</b>':''}
+function expE(a,b){return 1/(1+Math.pow(10,(b-a)/400))}
+function kOf(e){return e>=2400?16:e>=2100?24:32}
+function calc(a,b,rs){return Math.round(kOf(a)*((rs==="W"?1:rs==="D"?.5:0)-expE(a,b)))}
+function clampE(v){return Math.max(0,Math.min(4000,v))}
+function ymd(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
+function today(){return ymd(new Date())}
+function addD(n){var d=new Date();d.setDate(d.getDate()+n);return ymd(d)}
+function isBanned(p){return !!(p.ban&&(!p.ban.u||p.ban.u>=today()))}
+function banBox(p){if(!isBanned(p))return'';return'<div class="small" style="border:1px solid #e03131;color:#e03131;border-radius:12px;padding:10px 14px;margin:14px 0"><b>ถูกแบน</b> · '+(p.ban.u?'ถึงวันที่ '+esc(p.ban.u):'ถาวร')+' · เหตุผล: '+esc(p.ban.why||'-')+'<br>ไม่นับอันดับ และบันทึกผลแข่งไม่ได้จนกว่าจะปลดแบน</div>'}
+function banLog(p){if(!p.bl.length)return'';return'<h3 style="margin:18px 0 8px;color:var(--muted);font-size:1rem">ประวัติการแบน</h3><div class="scroll"><table style="min-width:520px"><thead><tr><th>วันที่</th><th>การดำเนินการ</th><th>เหตุผล</th><th>ระยะเวลา</th></tr></thead><tbody>'+p.bl.map(function(x,i){return{x:x,i:i}}).sort(function(a,b){return a.x.d===b.x.d?b.i-a.i:a.x.d<b.x.d?1:-1}).map(function(o){var x=o.x;return'<tr><td>'+esc(x.d)+'</td><td class="'+(x.t==="ban"?"dn":"up")+'">'+(x.t==="ban"?"แบน":"ปลดแบน")+'</td><td>'+esc(x.why||'')+'</td><td>'+(x.t==="ban"?(x.u?'ถึง '+esc(x.u):'ถาวร'):'')+'</td></tr>'}).join('')+'</tbody></table></div>'}
+function applyList(list){P=list;P.forEach(function(p){p.a=new Date().getFullYear()-p.b;p.r=p.r||{};p.h=p.h||[];p.bl=p.bl||[]});rank();drawBoard()}
+function catName(k){var c=CATS.filter(function(x){return x.k===k})[0];return c?c.n:k}
+function titleOf(e){for(var i=0;i<T.length;i++){if(e>=T[i].min&&(T[i].max===null||e<=T[i].max))return T[i].k}return null}
+function tl(e){var k=titleOf(e);return k?'<b>'+k+'</b>':'<span class="th">Unranked</span>'}
+var cSel=$("cSel"),qEl=$("q"),pc=$("pc"),pm=$("pmsg");
+[cSel,pc].forEach(function(s){s.innerHTML="";Object.keys(CN).forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=CN[k];s.appendChild(o)})});
+cSel.value="TH";
+$("hc").innerHTML=CATS.map(function(c){return'<option value="'+c.k+'">'+c.n+' · '+c.th+'</option>'}).join("");
+function catTabs(){$("catTabs").innerHTML=CATS.map(function(c){return'<button class="tab'+(c.k===cat?' on':'')+'" data-c="'+c.k+'" type="button">'+c.n+' · '+c.th+'</button>'}).join("")}
+$("catTabs").onclick=function(e){var b=e.target.closest("[data-c]");if(b){cat=b.getAttribute("data-c");catTabs();drawBoard()}};
+function drawBoard(){
+  var q=qEl.value.trim().toLowerCase(),h="";
+  P.filter(function(p){return p.r[cat]!=null&&(mode==="all"||p.c===cSel.value)&&p.n.toLowerCase().indexOf(q)>-1}).sort(function(a,b){return (isBanned(a)-isBanned(b))||b.r[cat]-a.r[cat]}).forEach(function(p){
+    var rk=mode==="all"?p.wr[cat]:p.cr[cat],bn=isBanned(p);
+    h+='<tr data-id="'+p.id+'"'+(bn?' style="opacity:.55"':'')+'><td class="rk'+(!bn&&rk<=3?' top':'')+'">'+(bn?'—':rk)+'</td><td><b style="color:var(--text)">'+esc(p.n)+'</b>'+(bn?' <span class="pill" style="border-color:#e03131;color:#e03131">BAN</span>':'')+'</td><td>'+CN[p.c]+'</td><td>'+fmt(p.r[cat])+'</td><td>'+tl(p.r[cat])+'</td><td>'+p.a+'</td></tr>';
+  });
+  $("lbBody").innerHTML=h||'<tr><td colspan="6" class="th">ไม่พบผู้เล่นในประเภทนี้</td></tr>';
+}
+function setMode(m){mode=m;cSel.hidden=m==="all";$("tabAll").classList.toggle("on",m==="all");$("tabCountry").classList.toggle("on",m!=="all");drawBoard()}
+$("tabAll").onclick=function(){setMode("all")};
+$("tabCountry").onclick=function(){setMode("country")};
+cSel.onchange=drawBoard;qEl.oninput=drawBoard;
+$("lbBody").onclick=function(e){var tr=e.target.closest("tr[data-id]");if(tr)location.hash="p-"+tr.getAttribute("data-id")};
+$("backBtn").onclick=function(){location.hash="board"};
+function chart(p,ck){
+  var pts=p.h.filter(function(x){return x.cat===ck&&x.e!=null&&x.d}).sort(function(a,b){return a.d<b.d?-1:1});
+  if(pts.length<2)return'<div class="small">ยังไม่มีข้อมูลพอสำหรับกราฟ '+catName(ck)+' (ต้องมีประวัติที่ระบุ Elo หลังแข่งอย่างน้อย 2 รายการ)</div>';
+  var v=pts.map(function(x){return x.e}),mn=Math.min.apply(null,v)-20,mx=Math.max.apply(null,v)+20,st=540/(pts.length-1);
+  var xy=pts.map(function(x,j){return[30+j*st,170-(x.e-mn)/(mx-mn)*150]});
+  return'<svg viewBox="0 0 600 200" width="100%" role="img" aria-label="กราฟ Elo"><polyline points="'+xy.map(function(a){return a[0]+','+a[1]}).join(' ')+'" fill="none" stroke-width="2.5" style="stroke:var(--accent)"/>'+xy.map(function(a){return'<circle cx="'+a[0]+'" cy="'+a[1]+'" r="3.5" style="fill:var(--accent)"/>'}).join('')+'<text x="30" y="192" font-size="11" style="fill:var(--muted)">'+esc(pts[0].d)+'</text><text x="570" y="192" text-anchor="end" font-size="11" style="fill:var(--muted)">'+esc(pts[pts.length-1].d)+'</text></svg>';
+}
+function renderProf(p){$("banBtn").hidden=isBanned(p);$("unbanBtn").hidden=!isBanned(p);
+  var b=best(p),k=b?titleOf(b.e):null,full=T.filter(function(x){return x.k===k})[0];
+  if(!pcat)pcat=b?b.c:"hs";
+  var cards=CATS.map(function(c){var e=p.r[c.k];return'<div class="fc'+(b&&b.c===c.k?' main':'')+'"><small>'+c.n+' · '+c.th+'</small><b>'+(e!=null?fmt(e):'—')+'</b><small>'+(e!=null?(isBanned(p)?'ถูกแบน · ไม่อยู่ในอันดับ':'โลก #'+p.wr[c.k]+' · ประเทศ #'+p.cr[c.k]):'ยังไม่มีเรตติ้ง')+'</small></div>'}).join('');
+  var tabs=CATS.map(function(c){return'<button class="tab'+(c.k===pcat?' on':'')+'" data-pc="'+c.k+'" type="button">'+c.n+'</button>'}).join('');
+  var nx=b?T.filter(function(x){return x.min>b.e})[0]:null;
+  var prog=!b?'—':nx?'อีก '+fmt(nx.min-b.e)+' คะแนนถึง '+nx.k+(nx.c==='Rating'?'':' (ต้อง '+nx.c+')'):'อยู่ระดับสูงสุดแล้ว';
+  var rows=p.h.map(function(x,i){return{x:x,i:i}}).sort(function(a,b){return a.x.d<b.x.d?1:-1}).map(function(o){var x=o.x,ch=x.ch;
+    return'<tr><td>'+esc(x.d||'')+'</td><td>'+esc(x.ev)+'</td><td><span class="pill">'+catName(x.cat)+'</span></td><td>'+(x.opp?esc(x.opp)+(x.oe!=null?' <span class="th">('+fmt(x.oe)+')</span>':''):'—')+'</td><td>'+rsl(x.rs)+(x.rs&&x.res?' · ':'')+esc(x.res||'')+'</td><td class="'+(ch>0?'up':ch<0?'dn':'')+'">'+(ch!=null?(ch>0?'+':'')+ch:'')+'</td><td>'+(x.e!=null?fmt(x.e):'')+'</td>'+(isAdmin?'<td><button class="back" style="margin:0" data-hi="'+o.i+'" type="button">ลบ</button></td>':'')+'</tr>'}).join('')||'<tr><td colspan="8" class="th">ยังไม่มีประวัติการแข่ง</td></tr>';
+  var fid=String(100000+(+p.id)*1371);
+  $("prof").innerHTML='<div class="fh">'+profAv(p)+'<div><h2>'+esc(p.n)+'</h2><div class="fed">'+CN[p.c]+(full?' · '+full.en:'')+'</div></div>'+(k?'<span class="badge" style="margin-left:auto;font-size:1.6rem">'+k+'</span>':'<span class="badge none" style="margin-left:auto;font-size:1.1rem">Unranked</span>')+'</div>'
+  +banBox(p)+'<div class="fcards">'+cards+'</div>'
+  +'<div class="fgrid"><div><h3>ข้อมูลผู้เล่น</h3><table class="kv"><tbody><tr><td>FFPTH ID</td><td><b>'+fid+'</b></td></tr><tr><td>ชื่อ</td><td>'+esc(p.n)+'</td></tr><tr><td>สังกัด (Federation)</td><td>'+CN[p.c]+'</td></tr><tr><td>ปีเกิด</td><td>'+p.b+'</td></tr><tr><td>อายุ</td><td>'+p.a+' ปี</td></tr><tr><td>Title สูงสุด</td><td>'+(full?full.en+' ('+k+')':'Unranked')+'</td></tr><tr><td>ความคืบหน้า</td><td>'+prog+'</td></tr></tbody></table></div>'
+  +'<div><h3>พัฒนาการ Elo</h3><div class="tabs">'+tabs+'</div>'+chart(p,pcat)+'</div></div>'
+  +banLog(p)+'<h3 style="margin:18px 0 8px;color:var(--muted);font-size:1rem">ประวัติการแข่ง</h3><div class="scroll"><table style="min-width:720px"><thead><tr><th>วันที่</th><th>รายการ</th><th>ประเภท</th><th>คู่แข่ง</th><th>ผล</th><th>Elo เปลี่ยน</th><th>Elo หลังแข่ง</th>'+(isAdmin?'<th></th>':'')+'</tr></thead><tbody>'+rows+'</tbody></table></div>';
+}
+$("prof").onclick=function(e){
+  var t=e.target.closest("[data-pc]");if(t&&curP){pcat=t.getAttribute("data-pc");renderProf(curP);return}
+  var d=e.target.closest("[data-hi]");if(d&&curP&&isAdmin){if(busy())return;var it=curP.h.splice(+d.getAttribute("data-hi"),1)[0];if(it&&it.ap&&it.ch!=null&&curP.r[it.cat]!=null)curP.r[it.cat]=clampE(curP.r[it.cat]-it.ch);rank();drawBoard();renderProf(curP);persist()}
+};
+function route(){
+  var h=location.hash,m=/^#p-(\d+)$/.exec(h),p=m&&P.filter(function(x){return x.id===m[1]})[0],tv=h==="#titer",lg=h==="#login",tr=h==="#tour",ct=h==="#contact",us=h==="#users"&&isAdmin,mv=h==="#me"&&!!me,rm=/^#t-(\d+)$/.exec(h),rt=rm&&TR.filter(function(x){return x.id===rm[1]})[0],bd=!tv&&!lg&&!tr&&!ct&&!rt&&!us&&!mv;
+  $("titerView").hidden=!tv;$("board").hidden=!bd;$("loginView").hidden=!lg;$("tourView").hidden=!tr;$("contactView").hidden=!ct;$("usersView").hidden=!us;$("meView").hidden=!mv;$("regView").hidden=!rt;
+  $("navTiter").classList.toggle("on",tv);$("navAdmin").classList.toggle("on",lg);$("navBoard").classList.toggle("on",bd);$("navTour").classList.toggle("on",tr||!!rt);$("navContact").classList.toggle("on",ct);$("navUsers").classList.toggle("on",us);if(us)drawUsers();$("navMe").classList.toggle("on",mv);if(mv)drawMe();
+  $("trAdmin").hidden=!isAdmin;if(!isAdmin)$("trform").hidden=true;tArm=null;if(tr)drawTour();if(rt){drawReg(rt);window.scrollTo(0,0)}
+  $("listView").hidden=!!p;$("profView").hidden=!p;$("profAdmin").hidden=!(p&&isAdmin);
+  $("bform").hidden=true;if(!isAdmin){$("pform").hidden=true;$("hform").hidden=true}
+  armed=false;$("delBtn").textContent="ลบผู้เล่น";
+  if(p){if(!curP||curP.id!==p.id)pcat=null;curP=p;renderProf(p);window.scrollTo(0,0)}
+}
+function navState(){$("navAdmin").textContent=(isAdmin||me)?"ออกจากระบบ"+(me?" ("+me.u+")":""):"ล็อกอิน";$("navUsers").hidden=!isAdmin;$("navMe").hidden=!me}
+function setAdmin(v){
+  isAdmin=v;if(v)me=null;try{sessionStorage.setItem("ffadm",v?"1":"0");if(v)sessionStorage.removeItem("ffuid")}catch(e){}
+  $("admin").hidden=!v;chkSave();navState();route();
+}
+function setUser(a){
+  me=a;isAdmin=false;try{sessionStorage.setItem("ffadm","0");sessionStorage.setItem("ffuid",a.id)}catch(e){}
+  $("admin").hidden=true;navState();route();
+}
+function sha(t){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return("0"+x.toString(16)).slice(-2)}).join("")})}
+function doLogin(){
+  var u=$("lu").value.trim(),pw=$("lp").value,m=$("lmsg"),bad="ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
+  var fin=function(f){$("lp").value="";m.textContent="";f();location.hash="board"};
+  if(u.toLowerCase()===ADM.u&&pw===ADM.p){fin(function(){setAdmin(true)});return}
+  var a=US.filter(function(x){return x.u.toLowerCase()===u.toLowerCase()})[0];
+  if(!a){m.textContent=bad;return}
+  sha(a.s+pw).then(function(h){if(h!==a.h){m.textContent=bad;return}fin(function(){setUser(a)})},function(){m.textContent="เบราว์เซอร์นี้ไม่รองรับการล็อกอิน"});
+}
+$("lgo").onclick=doLogin;
+$("lp").onkeydown=function(e){if(e.key==="Enter")doLogin()};
+$("navAdmin").onclick=function(){if(isAdmin||me){me=null;try{sessionStorage.removeItem("ffuid")}catch(e){}setAdmin(false);location.hash="board"}else location.hash="login"};
+$("navUsers").onclick=function(){location.hash="users"};
+$("navMe").onclick=function(){location.hash="me"};
+/* ---------- ตัวฉัน / รูปโปรไฟล์ ---------- */
+function accOf(p){var n=p.n.toLowerCase();return US.filter(function(a){return a.n.toLowerCase()===n})[0]}
+function avBox(s,ini){return s?'<img class="av" src="'+esc(s)+'" alt="">':'<div class="av">'+esc(ini.charAt(0).toUpperCase())+'</div>'}
+function profAv(p){var a=accOf(p),own=me&&a&&a.id===me.id;return'<div style="text-align:center">'+avBox(a&&AV[a.id],p.n)+(own?'<label class="small" style="display:block;cursor:pointer;color:var(--accent);font-weight:600">เปลี่ยนรูป<input id="avIn" type="file" accept="image/*" hidden></label>':'')+'</div>'}
+function refreshAv(){if(!$("meView").hidden)drawMe();if(curP&&!$("profView").hidden)renderProf(curP)}
+function drawMe(){
+  if(!me)return;
+  var pl=pFind(me.n),b=pl?best(pl):null,k=b?titleOf(b.e):null;
+  $("meCard").innerHTML='<div class="fh">'+avBox(AV[me.id],me.n)+'<div><h2>'+esc(me.n)+'</h2><div class="fed">'+(CN[me.c]||esc(me.c||''))+(k?' · '+k:'')+'</div><div class="tools" style="margin:10px 0 0"><label class="tab on" style="cursor:pointer">'+(AV[me.id]?'เปลี่ยนรูปโปรไฟล์':'อัปโหลดรูปโปรไฟล์')+'<input id="avIn" type="file" accept="image/*" hidden></label>'+(AV[me.id]?'<button class="tab" id="avDel" type="button">ลบรูป</button>':'')+'</div></div></div>'
+  +'<table class="kv" style="margin-top:14px"><tbody><tr><td>ชื่อจริง</td><td>'+(me.rn?esc(me.rn):'—')+'</td></tr><tr><td>ชื่อที่ขึ้นบน TOP</td><td>'+esc(me.n)+'</td></tr><tr><td>รหัส ID เกม</td><td>'+(me.uid?esc(me.uid):'—')+'</td></tr><tr><td>ชื่อผู้ใช้</td><td>'+esc(me.u)+'</td></tr><tr><td>ประเทศ</td><td>'+(CN[me.c]||esc(me.c||''))+'</td></tr></tbody></table>'
+  +(pl?'<div class="tools" style="margin:14px 0 0"><button class="tab" id="meGo" type="button">ดูโปรไฟล์ผู้เล่นของฉัน</button></div>':'<div class="small">ยังไม่มีชื่อ “'+esc(me.n)+'” ในตารางอันดับ</div>')+'<div class="small">* ชื่อจริงเห็นได้เฉพาะคุณและแอดมิน</div>';
+}
+$("meCard").onclick=function(e){var t=e.target;if(t.id==="avDel")avSet(null);else if(t.id==="meGo"&&me){var pl=pFind(me.n);if(pl)location.hash="p-"+pl.id}};
+document.addEventListener("change",function(e){if(e.target.id==="avIn"&&e.target.files[0]){avUp(e.target.files[0]);e.target.value=""}});
+function avUp(f){
+  if(!me||!/^image\//.test(f.type)){toast("เลือกไฟล์รูปภาพ",true);return}
+  var im=new Image(),u=URL.createObjectURL(f);
+  im.onload=function(){
+    var s=Math.min(im.width,im.height),c=document.createElement("canvas");c.width=c.height=256;
+    c.getContext("2d").drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,256,256);URL.revokeObjectURL(u);
+    avSet(c.toDataURL("image/jpeg",.82));
+  };
+  im.onerror=function(){URL.revokeObjectURL(u);toast("อ่านไฟล์รูปไม่ได้",true)};
+  im.src=u;
+}
+function avSet(d){
+  if(!me)return;var id=me.id;
+  if(!DB){toast("อัปโหลดรูปได้เฉพาะในหน้าเว็บที่เผยแพร่แล้ว",true);return}
+  if(d&&d.length>200000){toast("รูปใหญ่เกินไป",true);return}
+  var r=DB.collection("avatars").doc(id);
+  (d?r.set({a:d}):r.delete()).then(function(){if(d)AV[id]=d;else delete AV[id];refreshAv();toast(d?"อัปเดตรูปโปรไฟล์แล้ว ✓":"ลบรูปแล้ว")},function(){toast("บันทึกรูปไม่สำเร็จ",true)});
+}
+/* ---------- จัดการบัญชีผู้ใช้ (แอดมิน) ---------- */
+var uArm=null;
+$("uc").innerHTML=Object.keys(CN).map(function(k){return'<option value="'+k+'">'+CN[k]+'</option>'}).join("");
+function drawUsers(){uArm=null;$("uBody").innerHTML=US.map(function(a){return'<tr><td><b style="color:var(--text)">'+esc(a.u)+'</b></td><td>'+(a.rn?esc(a.rn):'—')+'</td><td>'+esc(a.n)+'</td><td>'+(CN[a.c]||esc(a.c||''))+'</td><td>'+(a.uid?esc(a.uid):'—')+'</td><td><button class="tab" data-ud="'+a.id+'" type="button">ลบ</button></td></tr>'}).join('')||'<tr><td colspan="6" class="th">ยังไม่มีบัญชีผู้ใช้</td></tr>'}
+$("uadd").onclick=function(){
+  if(!isAdmin||busy())return;
+  var u=$("uu").value.trim(),pw=$("up").value,n=$("un").value.trim().replace(/[|\n\r]/g," "),rn=$("ur").value.trim().replace(/[|\n\r]/g," "),uid=$("ui").value.replace(/\D/g,""),m=$("umsg");
+  if(!/^[A-Za-z0-9_.-]{3,20}$/.test(u)||pw.length<4){m.textContent="ชื่อผู้ใช้ 3–20 ตัว (อังกฤษ/ตัวเลข) และรหัสผ่านอย่างน้อย 4 ตัว";return}
+  if(!rn||!n||!/^\d{5,14}$/.test(uid)){m.textContent="กรอกชื่อจริง ชื่อที่ขึ้นบน TOP และรหัส ID เกม (ตัวเลข 5–14 หลัก)";return}
+  if(US.some(function(a){return a.uid===uid})){m.textContent="รหัส ID เกมนี้มีบัญชีแล้ว";return}
+  if(u.toLowerCase()===ADM.u||US.some(function(a){return a.u.toLowerCase()===u.toLowerCase()})){m.textContent="ชื่อผู้ใช้นี้ถูกใช้แล้ว";return}
+  var s=Math.random().toString(36).slice(2)+Date.now().toString(36);
+  sha(s+pw).then(function(h){var mx=0;US.forEach(function(a){mx=Math.max(mx,+a.id)});
+    US.push({id:String(mx+1),u:u,s:s,h:h,rn:rn,n:n,uid:uid,c:$("uc").value});
+    ["uu","up","ur","un","ui"].forEach(function(i){$(i).value=""});m.textContent="เพิ่มบัญชี "+u+" แล้ว";drawUsers();persist()},function(){m.textContent="เบราว์เซอร์นี้ไม่รองรับ"});
+};
+$("uBody").onclick=function(e){
+  var b=e.target.closest("[data-ud]");if(!b||!isAdmin||busy())return;var id=b.getAttribute("data-ud");
+  if(uArm!==id){uArm=id;b.textContent="ยืนยัน?";return}
+  uArm=null;US=US.filter(function(a){return a.id!==id});drawUsers();persist();
+};
+function plist(){return P.map(function(p){return{id:p.id,n:p.n,c:p.c,b:p.b,r:p.r,h:p.h,ban:p.ban||null,bl:p.bl||[]}})}
+function openForm(p){
+  editId=p?p.id:null;$("pn").value=p?p.n:"";pc.value=p?p.c:"TH";$("pb").value=p?p.b:"";
+  CATS.forEach(function(c){$("p"+c.k).value=p&&p.r[c.k]!=null?p.r[c.k]:""});
+  $("pform").hidden=false;pm.textContent=p?"กำลังแก้ไข "+p.n:"";
+}
+$("addBtn").onclick=function(){openForm(null)};
+$("cancelBtn").onclick=function(){$("pform").hidden=true;pm.textContent=""};
+$("saveBtn").onclick=function(){
+  if(busy())return;
+  var n=$("pn").value.trim(),b=parseInt($("pb").value,10),r={},ok=true;
+  CATS.forEach(function(c){var s=$("p"+c.k).value.trim();if(s!==""){var e=parseInt(s,10);if(isNaN(e)||e<0||e>4000)ok=false;else r[c.k]=e}});
+  if(!n||!ok||!Object.keys(r).length||isNaN(b)||b<1950||b>2025){pm.textContent="กรอกชื่อ ปีเกิด (ค.ศ. 1950–2025) และ Elo อย่างน้อย 1 ประเภท (0–4000)";return}
+  var list=plist();
+  if(editId){list.forEach(function(p){if(p.id===editId){p.n=n;p.c=pc.value;p.b=b;p.r=r}})}
+  else{var mx=0;list.forEach(function(p){mx=Math.max(mx,+p.id)});list.push({id:String(mx+1),n:n,c:pc.value,b:b,r:r,h:[]})}
+  $("pform").hidden=true;applyList(list);route();persist();
+};
+$("editBtn").onclick=function(){if(curP){openForm(curP);window.scrollTo(0,0)}};
+$("delBtn").onclick=function(){
+  if(busy())return;
+  if(!curP)return;
+  if(!armed){armed=true;this.textContent="กดอีกครั้งเพื่อยืนยันการลบ";return}
+  armed=false;var nl=plist().filter(function(p){return p.id!==curP.id});applyList(nl);curP=null;persist();location.hash="board";
+};
+function oppOf(n){n=n.trim().toLowerCase();return n?P.filter(function(x){return curP&&x.id!==curP.id&&x.n.toLowerCase()===n})[0]:null}
+function hm(t){$("hprev").textContent=t;pm.textContent=t}
+function hSync(fill){
+  if(!curP)return;
+  var k=$("hc").value,o=oppOf($("ho").value),ok=o&&o.r[k]!=null;
+  if(fill&&ok)$("hoe").value=o.r[k];
+  $("hoppw").hidden=!(ok&&!isBanned(o));
+  var me=curP.r[k],oe=num($("hoe").value),rs=$("hrs").value,t="";
+  if(rs){
+    if(me==null)t="ผู้เล่นยังไม่มีเรตติ้งในประเภทนี้ (แก้ไขผู้เล่นเพื่อใส่ Elo ก่อน)";
+    else if(oe==null)t="กรอก Elo คู่แข่งเพื่อคำนวณ";
+    else{var c=calc(me,oe,rs);t="คำนวณ: "+(c>0?"+":"")+c+" → Elo "+fmt(clampE(me+c))}
+  }
+  $("hprev").textContent=t;
+}
+$("hAddBtn").onclick=function(){if(curP&&isBanned(curP)){pm.textContent="ผู้เล่นถูกแบน — ปลดแบนก่อนเพิ่มผลแข่ง";return}
+  fillEv();
+  ["hd","hv","hr","hch","he","ho","hoe"].forEach(function(i){$(i).value=""});
+  $("hrs").value="W";if(pcat)$("hc").value=pcat;
+  $("oplist").innerHTML=P.filter(function(x){return curP&&x.id!==curP.id}).map(function(x){return'<option value="'+esc(x.n)+'">'}).join("");
+  $("hopp").checked=true;$("hform").hidden=false;hSync(false);
+};
+$("ho").oninput=function(){hSync(true)};$("hoe").oninput=function(){hSync(false)};
+$("hc").onchange=function(){hSync(true)};$("hrs").onchange=function(){hSync(false)};
+$("hcancel").onclick=function(){$("hform").hidden=true;$("hprev").textContent=""};
+$("hsave").onclick=function(){
+  if(busy())return;
+  var d=$("hd").value,ev=$("hv").value.trim();
+  if(!curP||!d||!ev){hm("กรอกวันที่และชื่อรายการแข่ง");return}
+  if(isBanned(curP)){hm("ผู้เล่นถูกแบน — ปลดแบนก่อนเพิ่มผลแข่ง");return}
+  var k=$("hc").value,rs=$("hrs").value,opp=$("ho").value.trim(),oe=num($("hoe").value),ch=num($("hch").value),e=num($("he").value),me=curP.r[k],o=oppOf(opp);
+  var h={d:d,ev:ev,cat:k,res:$("hr").value.trim()};
+  if(opp)h.opp=opp;if(oe!=null)h.oe=oe;if(rs)h.rs=rs;
+  if(rs){
+    if(me==null){hm("ผู้เล่นยังไม่มีเรตติ้งในประเภทนี้ (แก้ไขผู้เล่นเพื่อใส่ Elo ก่อน)");return}
+    if(ch==null){if(oe==null){hm("กรอก Elo คู่แข่ง หรือกรอก Elo เปลี่ยนเอง");return}ch=calc(me,oe,rs)}
+    var ne=clampE(me+ch);h.ch=ne-me;h.e=ne;h.ap=1;curP.r[k]=ne;
+    if(o&&o.r[k]!=null&&!isBanned(o)&&$("hopp").checked){
+      var rv=rs==="W"?"L":rs==="L"?"W":"D",on=clampE(o.r[k]+calc(o.r[k],me,rv));
+      o.h.push({d:d,ev:ev,cat:k,res:h.res,opp:curP.n,oe:me,rs:rv,ch:on-o.r[k],e:on,ap:1});o.r[k]=on;
+    }
+  }else{h.ch=ch;h.e=e}
+  curP.h.push(h);rank();drawBoard();
+  $("hform").hidden=true;$("hprev").textContent="";pcat=k;renderProf(curP);persist();
+};
+$("banBtn").onclick=function(){$("bw").value="";$("bd").value="0";$("bform").hidden=false};
+$("bcancel").onclick=function(){$("bform").hidden=true};
+$("bsave").onclick=function(){
+  if(busy())return;
+  var w=$("bw").value.trim(),n=parseInt($("bd").value,10);
+  if(!curP)return;
+  if(!w){pm.textContent="กรอกเหตุผลการแบน";return}
+  var u=n>0?addD(n):null;
+  curP.ban={s:today(),u:u,why:w};curP.bl.push({d:today(),t:"ban",why:w,u:u});
+  $("bform").hidden=true;rank();drawBoard();renderProf(curP);persist();
+};
+$("unbanBtn").onclick=function(){
+  if(busy())return;
+  if(!curP||!isBanned(curP))return;
+  curP.bl.push({d:today(),t:"unban",why:"ปลดแบนโดยแอดมิน"});curP.ban=null;
+  rank();drawBoard();renderProf(curP);persist();
+};
+
+/* ---------- บันทึกอัตโนมัติ ---------- */
+var saveT=null,saving=false;
+function toast(t,err){var e=$("toast");clearTimeout(toast.t);e.textContent=t;e.className=err?"err":"";e.hidden=!t;if(t&&!err)toast.t=setTimeout(function(){e.hidden=true},3500)}
+function setSt(t,err){$("asv").textContent=t;$("asv").style.color=err?"#e03131":"";toast(t,err)}
+function busy(){if(saving){toast("กำลังบันทึก รอสักครู่…");return true}return false}
+function tlist(){return TR.map(function(t){return{id:t.id,n:t.n,d:t.d||"",cat:t.cat||"",s:t.s||"up",note:t.note||"",cap:t.cap==null?null:t.cap,reg:t.reg||""}})}
+function persist(){clearTimeout(saveT);setSt("มีการเปลี่ยนแปลง กำลังบันทึกอัตโนมัติ…");saveT=setTimeout(doSave,600)}
+function failSave(msg){saving=false;setSt(msg,true);$("retryBtn").hidden=false}
+function doSave(){
+  if(!(window.claude&&claude.use)){failSave("บันทึกอัตโนมัติใช้ได้เฉพาะหน้าเว็บที่เผยแพร่แล้ว");return}
+  saving=true;$("retryBtn").hidden=true;setSt("กำลังบันทึก…");
+  claude.use("artifact").then(function(art){
+    if(!art){failSave("บันทึกไม่ได้ในมุมมองนี้ (ต้องเปิดด้วยบัญชีเจ้าของ/ผู้แก้ไขของหน้า)");return}
+    var d=new DOMParser().parseFromString(SRC,"text/html"),bs=String.fromCharCode(92);
+    d.getElementById("pdata").textContent=JSON.stringify(plist()).replace(/</g,bs+"u003c");
+    d.getElementById("tdata").textContent=JSON.stringify(tlist()).replace(/</g,bs+"u003c");
+    d.getElementById("udata").textContent=JSON.stringify(US).replace(/</g,bs+"u003c");
+    d.getElementById("rdata").textContent=JSON.stringify(RG).replace(/</g,bs+"u003c");
+    try{sessionStorage.setItem("ffsaved","1")}catch(e){}
+    return art.publish("<!DOCTYPE html>\n"+d.documentElement.outerHTML).then(function(){saving=false;setSt("บันทึกอัตโนมัติแล้ว ✓")},function(e){
+      try{sessionStorage.removeItem("ffsaved")}catch(x){}
+      if(e&&e.code==="conflict"){saving=false;return}
+      failSave((e&&(e.code==="not_writer"||e.code==="not_granted"))?"บัญชีที่เปิดหน้านี้ไม่มีสิทธิ์บันทึก (ต้องเป็นเจ้าของ/ผู้แก้ไขของหน้า)":"บันทึกไม่สำเร็จ ("+((e&&e.code)||"error")+")")});
+  },function(){failSave("บันทึกไม่สำเร็จ")});
+}
+function chkSave(){
+  if(!isAdmin)return;
+  if(!(window.claude&&claude.use)){$("asv").textContent="บันทึกอัตโนมัติ: ใช้ได้เฉพาะหน้าที่เผยแพร่แล้ว";return}
+  claude.use("artifact").then(function(a){$("asv").style.color=a?"":"#e03131";$("asv").textContent=a?"บันทึกอัตโนมัติ: เปิดอยู่ (บันทึกทุกครั้งที่แอดมินเพิ่ม/แก้ไข/ลบ)":"บันทึกอัตโนมัติ: ไม่พร้อม — ต้องเปิดด้วยบัญชีเจ้าของ/ผู้แก้ไขของหน้า"},function(){})
+}
+$("retryBtn").onclick=doSave;
+
+/* ---------- ทัวร์นาเมนต์ (แอดมินจัดการทั้งหมด) ---------- */
+var TS={up:"เร็วๆ นี้",live:"กำลังแข่ง",done:"จบแล้ว"},tArm=null,tEdit=null;
+$("trc").innerHTML='<option value="">ทุกประเภท</option>'+CATS.map(function(c){return'<option value="'+c.k+'">'+c.n+' · '+c.th+'</option>'}).join("");
+function tPart(n){var c=0;P.forEach(function(p){if(p.h.some(function(x){return x.ev===n}))c++});return c}
+function drawTour(){
+  $("trList").innerHTML=TR.slice().sort(function(a,b){return (b.d||"")<(a.d||"")?-1:1}).map(function(t){
+    return'<div class="card tcard"><div class="thead"><div><b class="tn">'+esc(t.n)+'</b><div class="small" style="margin:0">'+(t.d?esc(t.d):'ยังไม่กำหนดวัน')+' · '+(t.cat?catName(t.cat):'ทุกประเภท')+' · ผู้เล่นที่มีผลแข่ง '+tPart(t.n)+' คน</div></div><span class="pill'+(t.s==="live"?' t':'')+'">'+(TS[t.s]||'')+'</span></div>'+(t.note?'<div class="tnote">'+esc(t.note)+'</div>':'')+'<div class="tools" style="margin:10px 0 0"><button class="tab on" data-tv="'+t.id+'" type="button">'+(t.reg?'ลงชื่อ / ดูรายชื่อ':'ดูรายชื่อ')+' ('+rcnt(t.id)+(t.cap?'/'+t.cap:'')+')</button></div>'+(isAdmin?'<div class="tools" style="margin:10px 0 0"><button class="tab" data-te="'+t.id+'" type="button">แก้ไข</button><button class="tab" data-td="'+t.id+'" type="button">ลบ</button></div>':'')+'</div>';
+  }).join('')||'<div class="card th">ยังไม่มีรายการทัวร์นาเมนต์'+(isAdmin?' — กด “+ เพิ่มทัวร์นาเมนต์” เพื่อเริ่มต้น':'')+'</div>';
+}
+function tOpen(t){
+  tEdit=t?t.id:null;$("trn").value=t?t.n:"";$("trd").value=t&&t.d?t.d:"";$("trc").value=t&&t.cat?t.cat:"";$("trs").value=t?t.s||"up":"up";$("trnote").value=t&&t.note?t.note:"";$("trcap").value=t&&t.cap!=null?t.cap:"";$("trreg").checked=!!(t&&t.reg);
+  $("trform").hidden=false;$("trmsg").textContent=t?"กำลังแก้ไข "+t.n:"";
+}
+$("trAdd").onclick=function(){tOpen(null)};
+$("trCancel").onclick=function(){$("trform").hidden=true;$("trmsg").textContent=""};
+$("trSave").onclick=function(){
+  if(busy())return;
+  var n=$("trn").value.trim(),d=$("trd").value,c=$("trc").value,st=$("trs").value,note=$("trnote").value.trim(),m=$("trmsg"),cap=num($("trcap").value),reg=$("trreg").checked?"1":"";if(cap!=null&&cap<1)cap=null;
+  if(!n){m.textContent="กรอกชื่อรายการทัวร์นาเมนต์";return}
+  if(TR.some(function(t){return t.id!==tEdit&&t.n.toLowerCase()===n.toLowerCase()})){m.textContent="มีรายการชื่อนี้แล้ว";return}
+  if(tEdit){TR.forEach(function(t){if(t.id===tEdit){if(t.n!==n){var o=t.n;P.forEach(function(p){p.h.forEach(function(x){if(x.ev===o)x.ev=n})})}t.n=n;t.d=d;t.cat=c;t.s=st;t.note=note;t.cap=cap;t.reg=reg}})}
+  else{var mx=0;TR.forEach(function(t){mx=Math.max(mx,+t.id)});TR.push({id:String(mx+1),n:n,d:d,cat:c,s:st,note:note,cap:cap,reg:reg})}
+  $("trform").hidden=true;m.textContent="";drawTour();persist();
+};
+$("trList").onclick=function(e){
+  var v=e.target.closest("[data-tv]");if(v){location.hash="t-"+v.getAttribute("data-tv");return}
+  if(!isAdmin)return;
+  var b=e.target.closest("[data-te]");
+  if(b){tOpen(TR.filter(function(t){return t.id===b.getAttribute("data-te")})[0]);window.scrollTo(0,0);return}
+  var x=e.target.closest("[data-td]");
+  if(x){if(busy())return;var id=x.getAttribute("data-td");
+    if(tArm!==id){tArm=id;x.textContent="กดอีกครั้งเพื่อยืนยันการลบ";return}
+    tArm=null;TR=TR.filter(function(t){return t.id!==id});RG=RG.filter(function(r){return r.t!==id});drawTour();persist()}
+};
+
+/* ---------- ลงชื่อเข้าร่วมทัวร์นาเมนต์ ---------- */
+function rcnt(id){return RG.filter(function(r){return r.t===id}).length}
+function pFind(n){n=n.toLowerCase();return P.filter(function(p){return p.n.toLowerCase()===n})[0]}
+$("rc").innerHTML=Object.keys(CN).map(function(k){return'<option value="'+k+'">'+CN[k]+'</option>'}).join("");
+function drawReg(t){
+  curT=t;rArm=null;
+  var L=RG.filter(function(r){return r.t===t.id}),full=!!t.cap&&L.length>=t.cap,open=!!t.reg&&!full;
+  $("rHead").innerHTML='<b class="tn">'+esc(t.n)+'</b> <span class="pill'+(t.s==="live"?' t':'')+'">'+(TS[t.s]||'')+'</span><div class="small">'+(t.d?esc(t.d):'ยังไม่กำหนดวัน')+' · '+(t.cat?catName(t.cat):'ทุกประเภท')+' · ลงชื่อแล้ว '+L.length+(t.cap?'/'+t.cap:'')+' คน · '+(open?'<b class="up">เปิดรับลงชื่อ</b>':full?'<b class="dn">เต็มแล้ว</b>':'<b class="dn">ปิดรับลงชื่อ</b>')+'</div>'+(t.note?'<div class="tnote">'+esc(t.note)+'</div>':'');
+  $("rForm").hidden=!isAdmin;$("rAdd").hidden=!isAdmin;$("rPw").hidden=!isAdmin;
+  $("rBody").innerHTML=L.map(function(r,i){
+    var p=pFind(r.n),b=p?best(p):null,k=t.cat||(b&&b.c),e=p&&k?p.r[k]:null;
+    return'<tr><td class="rk">'+(i+1)+'</td><td><b style="color:var(--text)">'+esc(r.n)+'</b></td><td>'+(CN[r.c]||esc(r.c||''))+'</td><td>'+(r.u?esc(r.u):'—')+'</td><td>'+(e!=null?fmt(e):'—')+'</td><td>'+(e!=null?tl(e):'—')+'</td><td>'+((isAdmin||(me&&r.a===me.id))?'<button class="tab" data-rd="'+r.id+'" type="button">ลบ</button>':'')+'</td></tr>'
+  }).join('')||'<tr><td colspan="7" class="th">ยังไม่มีผู้ลงชื่อ</td></tr>';
+  var S=$("rSelf"),mine=me&&L.filter(function(r){return r.a===me.id})[0],hd='<h2 style="margin-bottom:6px">ลงชื่อเข้าร่วม</h2>';
+  S.hidden=isAdmin;
+  if(!isAdmin)S.innerHTML=!me?hd+'<div class="small" style="margin:0 0 10px">ต้องล็อกอินก่อนจึงจะลงชื่อได้</div><a class="tab on" href="#login" style="text-decoration:none">ล็อกอิน</a>'
+    :mine?hd+'<div class="small" style="margin:0"><b class="up">คุณลงชื่อแล้ว</b> ในชื่อ '+esc(mine.n)+'</div><div class="tools" style="margin:10px 0 0"><button class="tab" id="rSelfDel" type="button">ยกเลิกการลงชื่อ</button></div>'
+    :!open?hd+'<div class="small" style="margin:0">'+(full?'รายชื่อเต็มแล้ว':'ปิดรับลงชื่อ')+'</div>'
+    :hd+'<div class="small" style="margin:0">จะลงชื่อในชื่อ <b>'+esc(me.n)+'</b> · '+(CN[me.c]||esc(me.c||''))+(me.uid?' · UID '+esc(me.uid):'')+'</div><div class="tools" style="margin:10px 0 0"><button class="tab on" id="rSelfGo" type="button">ลงชื่อเข้าร่วมเลย</button></div>';
+}
+function regPut(r){
+  if(DB)return DB.collection("regs").doc(r.id).set(r).catch(function(){toast("ลงชื่อไม่สำเร็จ (หน้านี้ยังไม่อนุญาตให้เขียนข้อมูล)",true)});
+  if(!isAdmin){toast("ระบบลงชื่อยังใช้ไม่ได้ในหน้านี้",true);return}
+  RG.push(r);drawReg(curT);persist();
+}
+function regDel(id){
+  if(DB)return DB.collection("regs").doc(id).delete().catch(function(){toast("ลบไม่สำเร็จ",true)});
+  RG=RG.filter(function(r){return r.id!==id});drawReg(curT);persist();
+}
+$("rSelf").onclick=function(e){
+  if(!me||!curT||busy())return;
+  var L=RG.filter(function(r){return r.t===curT.id});
+  if(e.target.id==="rSelfDel"){var r=L.filter(function(x){return x.a===me.id})[0];if(r)regDel(r.id);return}
+  if(e.target.id!=="rSelfGo")return;
+  if(!curT.reg||(curT.cap&&L.length>=curT.cap)||L.some(function(r){return r.a===me.id||r.n.toLowerCase()===me.n.toLowerCase()})){toast("ลงชื่อไม่ได้",true);return}
+  regPut({id:"t"+curT.id+"_"+me.id,t:curT.id,n:me.n,c:me.c,u:me.uid||"",d:today(),a:me.id});
+};
+if(window.claude&&claude.use)claude.use("db").then(function(d){if(!d)return;DB=d;
+  d.collection("avatars").onSnapshot(function(s){AV={};s.docs.forEach(function(x){var v=x.data();if(v&&v.a)AV[x.id]=v.a});refreshAv()},function(){});
+  d.collection("regs").onSnapshot(function(s){RG=s.docs.map(function(x){var o=Object.assign({},x.data());o.id=x.id;return o});if(curT&&!$("regView").hidden)drawReg(curT);if(!$("tourView").hidden)drawTour()},function(){})},function(){});
+function rRead(){return{n:$("rn").value.trim().replace(/[|\n\r]/g," "),u:$("ru").value.replace(/\D/g,""),c:$("rc").value}}
+$("rBack").onclick=function(){location.hash="tour"};
+$("rCopy").onclick=function(){
+  var v=rRead(),t=curT,m=$("rmsg");
+  if(!t)return;if(!v.n){m.textContent="กรอกชื่อในเกมก่อน";return}
+  var msg="สมัครทัวร์นาเมนต์: "+t.n+"\nชื่อในเกม: "+v.n+"\nFF UID: "+(v.u||"-")+"\nประเทศ: "+(CN[v.c]||v.c)+"\nFFPTH-REG:"+[t.id,v.n,v.u,v.c].join("|");
+  $("rMsg").value=msg;$("rMsg").hidden=false;
+  var ok=function(){m.textContent="คัดลอกแล้ว — นำไปวางส่งแอดมินทาง Discord"},no=function(){$("rMsg").select();m.textContent="คัดลอกข้อความในกล่องด้านบน แล้วส่งให้แอดมินทาง Discord"};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(msg).then(ok,no);else no();
+};
+$("rPaste").oninput=function(){
+  var m=/FFPTH-REG:([^\n]*)/.exec(this.value);if(!m||!curT)return;
+  var a=m[1].split("|");
+  if(a[0]!==curT.id){$("rmsg").textContent="ข้อความนี้เป็นของทัวร์นาเมนต์อื่น";return}
+  $("rn").value=a[1]||"";$("ru").value=a[2]||"";if(CN[a[3]])$("rc").value=a[3];
+  $("rmsg").textContent="เติมข้อมูลแล้ว — ตรวจสอบแล้วกด “+ เพิ่มเข้ารายชื่อ”";
+};
+$("rAdd").onclick=function(){
+  if(!isAdmin||!curT||busy())return;
+  var v=rRead(),m=$("rmsg"),L=RG.filter(function(r){return r.t===curT.id});
+  if(!v.n){m.textContent="กรอกชื่อในเกมก่อน";return}
+  if(L.some(function(r){return r.n.toLowerCase()===v.n.toLowerCase()})){m.textContent="มีชื่อนี้ในรายการแล้ว";return}
+  if(curT.cap&&L.length>=curT.cap){m.textContent="รายชื่อเต็มแล้ว";return}
+  regPut({id:"m"+Date.now().toString(36),t:curT.id,n:v.n,c:v.c,u:v.u,d:today()});
+  $("rn").value="";$("ru").value="";$("rPaste").value="";$("rMsg").hidden=true;m.textContent="เพิ่ม "+v.n+" แล้ว";
+};
+$("rBody").onclick=function(e){
+  var b=e.target.closest("[data-rd]");if(!b||busy())return;
+  var id=b.getAttribute("data-rd"),rr=RG.filter(function(r){return r.id===id})[0];
+  if(!rr||!(isAdmin||(me&&rr.a===me.id)))return;
+  if(rArm!==id){rArm=id;b.textContent="ยืนยัน?";return}
+  rArm=null;regDel(id);
+};
+function fillEv(){
+  var seen={},names=[];
+  TR.forEach(function(t){seen[t.n]=1;names.push(t.n)});
+  P.forEach(function(p){p.h.forEach(function(x){if(x.ev&&!seen[x.ev]){seen[x.ev]=1;names.push(x.ev)}})});
+  $("evlist").innerHTML=names.map(function(n){return'<option value="'+esc(n)+'">'}).join("");
+}
+$("hv").oninput=function(){
+  var v=$("hv").value.trim(),t=TR.filter(function(x){return x.n===v})[0];
+  if(t){if(!$("hd").value&&t.d)$("hd").value=t.d;if(t.cat){$("hc").value=t.cat;hSync(true)}}
+};
+try{if(isAdmin&&sessionStorage.getItem("ffsaved")==="1"){sessionStorage.removeItem("ffsaved");toast("บันทึกอัตโนมัติสำเร็จ ✓")}}catch(e){}
+chkSave();
+window.addEventListener("hashchange",route);
+$("admin").hidden=!isAdmin;navState();
+$("navBoard").onclick=function(){location.hash="board"};
+$("navTiter").onclick=function(){location.hash="titer"};
+$("navTour").onclick=function(){location.hash="tour"};
+$("navContact").onclick=function(){location.hash="contact"};
+catTabs();drawBoard();route();
+
+var elo=document.getElementById("elo"),res=document.getElementById("res"),bar=document.getElementById("bar");
+elo.addEventListener("input",function(){
+  document.querySelectorAll(".row.on").forEach(function(e){e.classList.remove("on")});
+  var v=parseInt(elo.value,10);
+  if(isNaN(v)||v<0){res.innerHTML='<div class="rmeta">กรอกคะแนนเพื่อดูว่าอยู่ Title ไหน</div>';bar.style.width="0";return}
+  var idx=-1;
+  for(var i=0;i<T.length;i++){if(v>=T[i].min&&(T[i].max===null||v<=T[i].max)){idx=i;break}}
+  var t=T[idx];
+  var row=document.getElementById("r"+idx);if(row)row.classList.add("on");
+  bar.style.width=Math.min(100,v/2500*100)+"%";
+  if(t.k){
+    var note=t.c==="Rating"?"ได้รับตามเรตติ้ง":"เงื่อนไขเพิ่มเติม: "+t.c;
+    res.innerHTML='<div class="badge">'+t.k+'</div><div class="rname">'+t.en+' · '+t.th+'</div><div class="rmeta">'+note+'</div>';
+  }else{
+    var nxt=T.filter(function(x){return x.k&&x.min>v})[0];
+    res.innerHTML='<div class="badge none">Unranked</div><div class="rname">ช่วงคะแนนนี้ยังไม่มี Title</div><div class="rmeta">ต้องการอีก '+fmt(nxt.min-v)+' คะแนนถึง '+nxt.k+'</div>';
+  }
+});
+</script></body></html>
